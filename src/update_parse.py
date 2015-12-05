@@ -7,8 +7,8 @@ def parse(xml_file):
     file_list = []
 
     for UpdateObject in root[0].findall('UpdateObject'):
-        DisplayName = UpdateObject.find('DisplayName').text.lower()
-        FileName = UpdateObject.find('FileName').text.lower()
+        DisplayName = UpdateObject.find('DisplayName').text
+        FileName = UpdateObject.find('FileName').text
         URL = UpdateObject.find('URL').text
         Description = UpdateObject.find('Description').text
         Hash = UpdateObject.find('Hash').text
