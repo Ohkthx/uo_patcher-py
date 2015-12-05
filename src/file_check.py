@@ -7,9 +7,10 @@ import os.path
 #  Checks hashes against each other.
 # # # # # # # # # # # # # # # # # # # 
 
+
 def grab_hash(le_file_path):
     le_name = le_file_path.split('/')[-1:][0]   # Sets the name of the file to the final item
-    print("\nChecking: %s" % le_name)           #   in the path.
+    print(" [%s]  Checking hash." % le_name)           #   in the path.
     if os.path.isfile(le_file_path):            # Check for the file existing...
         le_file = open(le_file_path, 'rb')      #  if so, Open the file.
     else:

@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 #   ( SUPER ) important.
 # # # # # # # # # # # # # # # # # # # # # # # #
 
+
 def parse(xml_file):
     tree = ET.parse(xml_file)   # Assign the tree of the XML
     root = tree.getroot()       # Get that root (of the XML, (UpdateCollection))

@@ -2,6 +2,8 @@ import zipfile
 import urllib.request
 import os
 
+import file_check
+
 # # # # # # # # # # # # # # # # # # # #
 # Responsible for processing the files
 #  Downloads files
@@ -15,18 +17,36 @@ if not os.path.exists("uo_patch/"):
 else:
     os.chdir("uo_patch/")   # Changes to the directory.
 
+
+def taskFile(file_info, uo_path):
+    local_f_md5 = file_check.grab_hash(uo_path + file_info['DisplayName'])  # Compute the hash of the local file
+    if local_f_md5 == True:                                                 # If the file doesn't exist..
+        dl_file = grab_file(file_info['URL'])                               # Download it,
+        le_file = pull_file(dl_file)                                        # Extract it.
+        os.rename(le_file, uo_path + le_file)                               # Move it to the uo_directory.
+    elif local_f_md5:                                                       # If hash is computed.
+        if file_check.check_hash(local_f_md5, file_info['Hash']):           # Check against the XML Hash
+            print(" [%s]  Matching Hashes. Not installing." % file_info['DisplayName'])
+        else:
+            dl_file = grab_file(file_info['URL'])                           # Else, download the file
+            le_file = pull_file(dl_file)                                    #  Extract the file.
+            os.rename(le_file, uo_path + le_file)                           #  Move the file to the new location.
+    else:
+        print(" [%s]  Bad file." % file_info['DisplayName'])
+
+
 def grab_file(le_url):
-    print("Pulling: %s" % le_url)
     le_file = le_url.split('/')[-1:][0]     # Get the file name from the URL.
+    print(" [%s]  Downloading file." % le_file)
     pull = urllib.request.urlopen(le_url)   # Pull the file from the the URL.
     with open(le_file, 'wb') as f:          # Write to the file the contents.
         f.write(pull.read())
 
     if os.path.isfile(le_file):                 # Verify the file exists in uo_patch/
-        print("Downloaded file: %s" % le_file)  # Announce it succeeded.
+        print(" [%s]  File download complete." % le_file)  # Announce it succeeded.
         return le_file                          #  Return the name of the file.
     else:
-        print("Download failed?")               # Something happened? I've didn't witness it...
+        print(" [%s]  Download failed." % le_file)               # Something happened? I've didn't witness it...
         return False                            #  Return failure. :[
 
 
