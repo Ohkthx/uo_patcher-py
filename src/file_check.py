@@ -2,29 +2,29 @@ import hashlib
 import os.path
 
 # # # # # # # # # # # # # # # # # # #
-# le_file is the dl'd file.
-# file_installed is the installed file.
+# Reponsible for checking the files.
+#  Gets the hashes of files
+#  Checks hashes against each other.
 # # # # # # # # # # # # # # # # # # # 
 
-def grab_hash(le_file_name):
-    le_name = le_file_name.split('/')[-1:][0]
-    print("\nChecking: %s" % le_name)
-    if os.path.isfile(le_file_name):
-        le_file = open(le_file_name, 'rb')
+def grab_hash(le_file_path):
+    le_name = le_file_path.split('/')[-1:][0]   # Sets the name of the file to the final item
+    print("\nChecking: %s" % le_name)           #   in the path.
+    if os.path.isfile(le_file_path):            # Check for the file existing...
+        le_file = open(le_file_path, 'rb')      #  if so, Open the file.
     else:
-        return True
+        return True                             #  if not, flag "True" for downloading.
 
-    buff = le_file.read()
-    le_md5 = hashlib.md5(buff).hexdigest()
-    return le_md5
+    buff = le_file.read()                       # Send the file into a buffer called "buff"
+    le_md5 = hashlib.md5(buff).hexdigest()      # Get the hash!
+    return le_md5                               # Return the computed md5hash of the file :D
 
-def check_hash(file_installed, file_dl):
-    if not file_installed == file_dl:
-        # If they do not match, it will return false and prompt download.
-        return False
+
+def check_hash(file_installed, file_dl):        
+    if not file_installed == file_dl:           # Checking the hashes bro, come at me...
+        return False                            # If they do not match, flag for downloading new.
     else:
-        # If the do match. Download will not happen and not be pushed in a list.
-        return True
+        return True                             # If they match, ignore this file. It exists... :[
 
 
 
