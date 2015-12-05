@@ -6,7 +6,7 @@ old files with the ones provided by the server. Written for python3.
 ### Installation:
 ```bash
 # Git way of installation:
-git clone https://github.com/0x1p2/uo_updater-py
+git clone https://github.com/0x1p2/uo_patcher-py
 cd uo_updater-py/src
 python updater.py
 ```
