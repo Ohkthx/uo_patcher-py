@@ -1,7 +1,5 @@
 ### Ultima Online Patcher.
-This is a patcher for Ultima Online. It will check a remote host for updates
-for a locally installed client. It will process the updates and replace the 
-old files with the ones provided by the server. Written for python3.
+This is a patcher for Ultima Online that works in linux. It can potentially work on OSX and Windows
 
 ### Installation:
 ```bash
