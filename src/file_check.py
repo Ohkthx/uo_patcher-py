@@ -7,7 +7,8 @@ import os.path
 # # # # # # # # # # # # # # # # # # # 
 
 def grab_hash(le_file_name):
-    print("Checking: %s" % le_file_name)
+    le_name = le_file_name.split('/')[-1:][0]
+    print("\nChecking: %s" % le_name)
     if os.path.isfile(le_file_name):
         le_file = open(le_file_name, 'rb')
     else:

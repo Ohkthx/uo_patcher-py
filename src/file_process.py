@@ -1,6 +1,7 @@
 import zipfile
 import urllib.request
 import os.path
+import os
 
 # # # # # # # # # # # # # # # # # # # # # # #
 # host = "http://www.uoforever.com/"
@@ -9,6 +10,12 @@ import os.path
 #
 # file_list is a list containing all ultima files.
 # # # # # # # # # # # # # # # # # # # # # # # 
+
+if not os.path.exists("uo_patch/"):
+    os.makedirs("uo_patch/")
+    os.chdir("uo_patch/")
+else:
+    os.chdir("uo_patch/")
 
 def grab_file(le_url):
     print("Pulling: %s" % le_url)
