@@ -35,15 +35,17 @@ for url in update_xml:
             if installed_md5 == True:
                 # Doesn't exist. Download it.
                 proc_file = file_process.grab_file(file_dict[le_file]['URL'])
-                file_to_mv = file_process.pull_file(proc_file)
+                mv_me = file_process.pull_file(proc_file)
+                os.rename(mv_me, uo_path + mv_me)
             elif installed_md5:
                 # Compare file's hash to dictionary.
                 if file_check.check_hash(installed_md5, file_dict[le_file]['Hash']):
-                    print("They match!")
+                    print("Matching hashes, %s already installed." % le_file)
                 else:
                     # Hashes do not match...
                     proc_file = file_process.grab_file(file_dict[le_file]['URL'])
-                    file_to_mv = file_process.pull_file(proc_file)
+                    mv_me = file_process.pull_file(proc_file)
+                    os.rename(mv_me, uo_path + mv_me)
             else:
                 print("Bad file.")
 

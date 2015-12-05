@@ -11,7 +11,7 @@ def parse(xml_file):
         FileName = UpdateObject.find('FileName').text
         URL = UpdateObject.find('URL').text
         Description = UpdateObject.find('Description').text
-        Hash = UpdateObject.find('Hash').text
+        Hash = UpdateObject.find('Hash').text.lower()
 
         file_dict[DisplayName] = { "DisplayName": DisplayName,"FileName": FileName, "URL": URL, "Description": Description, "Hash": Hash }
         file_list.append(DisplayName)

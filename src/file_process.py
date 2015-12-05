@@ -11,8 +11,8 @@ import os
 # file_list is a list containing all ultima files.
 # # # # # # # # # # # # # # # # # # # # # # # 
 
-if not os.path.exists("uo_patch/"):
-    os.makedirs("uo_patch/")
+if not os.path.exists("uo_patch/proc/"):
+    os.makedirs("uo_patch/proc/")
     os.chdir("uo_patch/")
 else:
     os.chdir("uo_patch/")
@@ -32,17 +32,18 @@ def grab_file(le_url):
         return False
 
 
-def pull_file(zipdfile, file_list):
+def pull_file(zipdfile):
     if not os.path.isfile(zipdfile):
         return False
-    raw_name = os.path.splitext(zipdfile)[0]
-    ext = ".mul"
-    if not zipfile.is_zipfile(zipdfile):
+    elif not zipfile.is_zipfile(zipdfile):
         return False
+
     le_zip = zipfile.ZipFile(zipdfile)
-    zip_file = le_zip.extract(raw_name + ext)
-    if os.path.isfile(raw_name + ext):
-        return raw_name + ext
+    raw_name = le_zip.namelist()[0]
+    zip_file = le_zip.extractall() #(raw_name + ext)
+
+    if os.path.isfile(raw_name):
+        return raw_name
     else:
         return False
 
