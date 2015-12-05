@@ -7,8 +7,8 @@ old files with the ones provided by the server. Written for python3.
 ```bash
 # Git way of installation:
 git clone https://github.com/0x1p2/uo_patcher-py
-cd uo_updater-py/src
-python updater.py
+cd uo_patcher-py/src
+python patcher.py
 ```
 
 #### Features:
