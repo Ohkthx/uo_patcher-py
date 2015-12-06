@@ -73,3 +73,22 @@ def pull_file(zipdfile):
 
     return raw_name        
 
+
+def getUOPath():
+    if os.name == "nt":
+        base_dir = os.environ['SystemDrive'] + "/"                 # Base directory for windows.
+        uo_dirs = [
+                base_dir + "Program Files (x86)/Electronic Arts/Ultima Online Classic/",    # 64-bit Post-XP
+                base_dir + "Program Files/Electronic Arts/Ultima Online Classic/",          # 32-bit System
+                base_dir + "Games/Electronic Arts/Ultima Online Classic/",                  # Windows 10?
+                ]
+    else:
+        base_dir = os.environ['HOME'] + "/"                         # Home directory + wineprefix
+        uo_dirs = [
+                base_dir + ".wine32/drive_c/Program Files/Electronic Arts/Ultima Online Classic/",  # Common extension
+                base_dir + ".wine/drive_c/Program Files/Electronic Arts/Ultima Online Classic/",    # Default wine32
+                base_dir + ".wine/drive_c/Program Files {x86)/Electronic Arts/Ultima Online Classic/",  # Default wine6
+                ]
+
+    return uo_dirs                                        # WONDER TWIN POWERS ACTIVATE
+

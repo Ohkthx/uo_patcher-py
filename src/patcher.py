@@ -11,29 +11,29 @@ import xmlParser
 #  were created.
 # # # # # # # # # # # # # # # # # # # # # # # # #
 
-def getUOPath():
-    if os.name == "nt":
-        base_dir = os.environ['SystemDrive'] + "/"                 # Base directory for windows.
-        uo_dir = "Program Files (x86)/Electronic Arts/Ultima Online Classic/"
-    else:
-        base_dir = os.environ['HOME'] + "/.wine32/drive_c/"         # Home directory + wineprefix
-        uo_dir = "Program Files/Electronic Arts/Ultima Online Classic/" # Common extension for all OSs.
-    return base_dir + uo_dir                                        # WONDER TWIN POWERS ACTIVATE
-
-uo_path = getUOPath()           # Just ya. Full path.
-
-if not os.path.exists(uo_path): # Verify that the UO path does indeed exist.. otherwise exit.
-    print("You need to edit the updater.py with the proper install location of UO.")
-    if os.name == "nt":
-        input("\n   Press any key to continue...")
-    exit()
-else:
-    print("\nUltima Directory:\n    %s\n" % uo_path)   # Pretty, pretty display of directory.
-
-## A list to contain all of the locations for Updates.xml ##
 update_xml = [
         "http://www.uoforever.com/patches/UOP/Updates.xml",
         ]
+
+
+# # # # # # END OF USER MODIFICATION # # # # # #
+
+dir_list = file_process.getUOPath()           # Just ya. Full path.
+uo_path = ""
+
+for directory in dir_list:
+    print("Checking... %s" % directory)
+    if not os.path.exists(directory): # Verify that the UO path does indeed exist.. otherwise exit.
+        pass
+    else:
+        print("\nUltima Directory:\n    %s\n" % uo_path)   # Pretty, pretty display of directory.
+        uo_path = directory
+
+if not uo_path:
+    print("Directory not found for Ultima Online.\n  You need to add your path to the configuration file.")
+    if os.name == "nt":
+        input("   Press any key to exit...")
+    exit()
 
 #   Pull the Update(s).xml   #
 THREADS = []
