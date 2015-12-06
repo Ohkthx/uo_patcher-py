@@ -1,6 +1,7 @@
 import zipfile
 import urllib.request
 import os
+import shutil
 
 import file_check
 
@@ -30,7 +31,7 @@ def taskFile(file_info, uo_path):
         else:
             dl_file = grab_file(file_info['URL'])                           # Else, download the file
             le_file = pull_file(dl_file)                                    #  Extract the file.
-            os.rename(le_file, uo_path + le_file)                           #  Move the file to the new location.
+            shutil.copy2(le_file, uo_path + le_file)                           #  Move the file to the new location.
     else:
         print(" [%s]  Bad file." % file_info['DisplayName'])
 

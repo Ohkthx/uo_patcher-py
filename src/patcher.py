@@ -13,8 +13,8 @@ import xmlParser
 
 def getUOPath():
     if os.name == "nt":
-        base_dir = os.environ['SystemDrive'] + "\\"                 # Base directory for windows.
-        uo_dir = "Program Files (x86)\Electronic Arts\Ultima Online Classic\\"
+        base_dir = os.environ['SystemDrive'] + "/"                 # Base directory for windows.
+        uo_dir = "Program Files (x86)/Electronic Arts/Ultima Online Classic/"
     else:
         base_dir = os.environ['HOME'] + "/.wine32/drive_c/"         # Home directory + wineprefix
         uo_dir = "Program Files/Electronic Arts/Ultima Online Classic/" # Common extension for all OSs.
@@ -24,9 +24,11 @@ uo_path = getUOPath()           # Just ya. Full path.
 
 if not os.path.exists(uo_path): # Verify that the UO path does indeed exist.. otherwise exit.
     print("You need to edit the updater.py with the proper install location of UO.")
+    if os.name == "nt":
+        input("\n   Press any key to continue...")
     exit()
 else:
-    print("\nUltima Directory: %s" % uo_path)   # Pretty, pretty display of directory.
+    print("\nUltima Directory:\n    %s\n" % uo_path)   # Pretty, pretty display of directory.
 
 ## A list to contain all of the locations for Updates.xml ##
 update_xml = [
@@ -34,14 +36,24 @@ update_xml = [
         ]
 
 #   Pull the Update(s).xml   #
+THREADS = []
 for url in update_xml:                              # Process 1 URL at a time from update_xml
     le_file = file_process.grab_file(url)           # Downloads the Updater.xml file.
     if not le_file:                                 # If it doesn't download, it will simply be skipped.
         print("An error occured with: %s" % url)
     else:
-        file_dict = xmlParser.parse(le_file)        # Parse the XML file.
+        file_dict = xmlParser.parse(le_file)        # Parse the XML file. 
         file_list = file_dict['files']              # Assign the list of files from file_dict (see xmlParser.py)
         
         for le_file in file_list:
-            threading.Thread(target=file_process.taskFile, args=(file_dict[le_file], uo_path, ) ).start() # Create a thread per update file to leverage bandwidth
+            T = threading.Thread(target=file_process.taskFile, args=(file_dict[le_file], uo_path, ) ) # Create a thread per update file to leverage bandwidth
+            THREADS.append(T)
 
+for x in THREADS:
+    x.start()
+
+for x in THREADS:
+    x.join()
+
+if os.name == 'nt':
+    input("\nPress any key to continue...")
