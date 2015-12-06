@@ -1,9 +1,9 @@
 import os
 import threading
 
-import file_check
+import file_hash
 import file_process
-import xmlParser
+import file_parser
 
 # # # # # # # # # # # # # # # # # # # # # # # # #
 # This is the core of the script.
@@ -22,11 +22,10 @@ dir_list = file_process.getUOPath()           # Just ya. Full path.
 uo_path = ""
 
 for directory in dir_list:
-    print("Checking... %s" % directory)
     if not os.path.exists(directory): # Verify that the UO path does indeed exist.. otherwise exit.
         pass
     else:
-        print("\nUltima Directory:\n    %s\n" % uo_path)   # Pretty, pretty display of directory.
+        print("\nUltima Directory:\n    %s\n" % directory)   # Pretty, pretty display of directory.
         uo_path = directory
 
 if not uo_path:
@@ -42,8 +41,8 @@ for url in update_xml:                              # Process 1 URL at a time fr
     if not le_file:                                 # If it doesn't download, it will simply be skipped.
         print("An error occured with: %s" % url)
     else:
-        file_dict = xmlParser.parse(le_file)        # Parse the XML file. 
-        file_list = file_dict['files']              # Assign the list of files from file_dict (see xmlParser.py)
+        file_dict = file_parser.parse(le_file)        # Parse the XML file. 
+        file_list = file_dict['files']              # Assign the list of files from file_dict (see file_parser.py)
         
         for le_file in file_list:
             T = threading.Thread(target=file_process.taskFile, args=(file_dict[le_file], uo_path, ) ) # Create a thread per update file to leverage bandwidth

@@ -3,7 +3,7 @@ import urllib.request
 import os
 import shutil
 
-import file_check
+import file_hash
 
 # # # # # # # # # # # # # # # # # # # #
 # Responsible for processing the files
@@ -20,7 +20,7 @@ else:
 
 
 def taskFile(file_info, uo_path):
-    local_f_md5 = file_check.grab_hash(uo_path + file_info['DisplayName'])  # Compute the hash of the local file
+    local_f_md5 = file_hash.grab_hash(uo_path + file_info['DisplayName'])  # Compute the hash of the local file
     if local_f_md5 == True:                                                 # If the file doesn't exist..
         dl_file = grab_file(file_info['URL'])                               # Download it,
         le_file = pull_file(dl_file)                                        # Extract it.
@@ -28,7 +28,7 @@ def taskFile(file_info, uo_path):
             shutil.copy2(files, uo_path + files)                            # Move it to the uo_directory.
             print(" [%s]  Moved to the Ultima Directory." % files)
     elif local_f_md5:                                                       # If hash is computed.
-        if file_check.check_hash(local_f_md5, file_info['Hash']):           # Check against the XML Hash
+        if file_hash.check_hash(local_f_md5, file_info['Hash']):           # Check against the XML Hash
             print(" [%s]  Matching Hashes. Not installing." % file_info['DisplayName'])
         else:
             dl_file = grab_file(file_info['URL'])                           # Else, download the file
