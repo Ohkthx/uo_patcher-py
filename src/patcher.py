@@ -14,9 +14,10 @@ import xmlParser
 def getUOPath():
     if os.name == "nt":
         base_dir = os.environ['SystemDrive'] + "\\"                 # Base directory for windows.
+        uo_dir = "Program Files (x86)\Electronic Arts\Ultima Online Classic\\"
     else:
         base_dir = os.environ['HOME'] + "/.wine32/drive_c/"         # Home directory + wineprefix
-    uo_dir = "Program Files/Electronic Arts/Ultima Online Classic/" # Common extension for all OSs.
+        uo_dir = "Program Files/Electronic Arts/Ultima Online Classic/" # Common extension for all OSs.
     return base_dir + uo_dir                                        # WONDER TWIN POWERS ACTIVATE
 
 uo_path = getUOPath()           # Just ya. Full path.
