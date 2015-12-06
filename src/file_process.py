@@ -24,14 +24,18 @@ def taskFile(file_info, uo_path):
     if local_f_md5 == True:                                                 # If the file doesn't exist..
         dl_file = grab_file(file_info['URL'])                               # Download it,
         le_file = pull_file(dl_file)                                        # Extract it.
-        os.rename(le_file, uo_path + le_file)                               # Move it to the uo_directory.
+        for files in le_file:
+            shutil.copy2(files, uo_path + files)                            # Move it to the uo_directory.
+            print(" [%s]  Moved to the Ultima Directory." % files)
     elif local_f_md5:                                                       # If hash is computed.
         if file_check.check_hash(local_f_md5, file_info['Hash']):           # Check against the XML Hash
             print(" [%s]  Matching Hashes. Not installing." % file_info['DisplayName'])
         else:
             dl_file = grab_file(file_info['URL'])                           # Else, download the file
             le_file = pull_file(dl_file)                                    #  Extract the file.
-            shutil.copy2(le_file, uo_path + le_file)                           #  Move the file to the new location.
+            for files in le_file:
+                shutil.copy2(files, uo_path + files)                        #  Move the file to the new location.
+                print(" [%s]  Moved to the Ultima Directory." % files)      
     else:
         print(" [%s]  Bad file." % file_info['DisplayName'])
 
@@ -58,11 +62,14 @@ def pull_file(zipdfile):
         return False                            #  Return failure if it is not.
 
     le_zip = zipfile.ZipFile(zipdfile)          # Set the zip file to the class.
-    raw_name = le_zip.namelist()[0]             # Extract the name of the contents.
-    zip_file = le_zip.extract(raw_name)              # PRESS THE RED BUTTON DEEDEE! (extract)
+    raw_name = le_zip.namelist()                # Extract the name of the contents.
+    for files in raw_name:
+        zip_file = le_zip.extract(files)        # PRESS THE RED BUTTON DEEDEE! (extract)
+        print(" [%s]  Extracted from archive." % files) # Extract files
+    
+    for files in raw_name:
+        if not os.path.isfile(files):               # If files do not exists....
+            return False                            # Some serious shit must've happened. idk
 
-    if os.path.isfile(raw_name):                # Verify the raw, extracted, file exists.
-        return raw_name                         #  Return the name of the file!
-    else:
-        return False                            # Some serious shit must've happened. idk
+    return raw_name        
 
