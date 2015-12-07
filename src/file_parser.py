@@ -9,6 +9,9 @@ import os.path
 
 
 def xmlparse(xml_file):
+    ''' Parses the XML file passed to it. This XML should be obtained
+    from a remote host/server and should include the file names, hashes,
+    locations(URL), and description of all files that are to be updated. '''
     tree = ET.parse(xml_file)   # Assign the tree of the XML
     root = tree.getroot()       # Get that root (of the XML, (UpdateCollection))
     file_dict = {}              # Blank dictionary to hold the informaton of the file.
@@ -30,6 +33,9 @@ def xmlparse(xml_file):
 
 
 def conf_write(config):
+    ''' Creates and writes changes to configuration files.
+    If "None" is passed to the function it creates, otherwise it
+    writes new changes. '''
     if not os.path.exists('config.ini'):                              # First time write/create.
         config = configparser.ConfigParser()    
         config['Files'] = {
@@ -44,6 +50,8 @@ def conf_write(config):
 
 
 def conf_read():
+    ''' Loads the configuration file. If it doesn't exist it will then call
+    the write function to create a new configuration file. Then it will load it. '''
     if not os.path.exists('config.ini'):
         print("\nCreating configuration file...")
         config = conf_write(None)

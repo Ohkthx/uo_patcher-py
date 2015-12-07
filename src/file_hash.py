@@ -9,6 +9,9 @@ import os.path
 
 
 def grab_hash(le_file_path):
+    ''' This will generate the hash of filename that is passed
+    to this function. It will then return the value of the hash
+    if the file is found. '''
     le_name = le_file_path.split('/')[-1:][0]   # Sets the name of the file to the final item
     print(" [%s]  Checking hash." % le_name)           #   in the path.
     if os.path.isfile(le_file_path):            # Check for the file existing...
@@ -22,6 +25,7 @@ def grab_hash(le_file_path):
 
 
 def check_hash(file_installed, file_dl):        
+    ''' Simple function for comparing. '''
     if not file_installed == file_dl:           # Checking the hashes bro, come at me...
         return False                            # If they do not match, flag for downloading new.
     else:

@@ -14,6 +14,7 @@ import file_parser
 
 # Create directory where all ZIP and .XML files will be stored
 def cwdPatchDir():
+    ''' Creates and/or changes to the patching directory. '''
     if not os.path.exists("uo_patch/"):
         os.makedirs("uo_patch/")
         os.chdir("uo_patch/")   # Changes to the directory.
@@ -22,6 +23,10 @@ def cwdPatchDir():
 
 
 def taskFile(config, file_info, uo_path):
+    ''' This is the function that is called on thread creation. 
+    It is responsible for executing the downloading. verifying,
+    and installation of files. Also it writes the updated hashes
+    to the configuration file. '''
     if file_info['DisplayName'] in config['Hashes']:
         local_f_md5 = config['Hashes'][file_info['DisplayName']]            # Get key from dictionary instead of computing.
     else:
@@ -50,6 +55,7 @@ def taskFile(config, file_info, uo_path):
 
 
 def grab_file(le_url):
+    ''' Downloads the fules and saves them. '''
     le_file = le_url.split('/')[-1:][0]     # Get the file name from the URL.
     print(" [%s]  Downloading file." % le_file)
     pull = urllib.request.urlopen(le_url)   # Pull the file from the the URL.
@@ -65,6 +71,8 @@ def grab_file(le_url):
 
 
 def pull_file(zipdfile):
+    ''' Extracts files from a ZIP Archive. It returns a list of all files
+    that are part of the Archive. '''
     if not os.path.isfile(zipdfile):            # Double check the file passed is indeed a file.
         return False                            #   Return failure if not.
     elif not zipfile.is_zipfile(zipdfile):      # Double check the file is a ZIP archive
@@ -84,6 +92,8 @@ def pull_file(zipdfile):
 
 
 def getUOPath():
+    ''' Gets the predefined and "common" installation directories of Ultima Online.
+    These will be ignored if a file is outlined in the configuration file. '''
     if os.name == "nt":
         base_dir = os.environ['SystemDrive'] + "/"                 # Base directory for windows.
         uo_dirs = [
