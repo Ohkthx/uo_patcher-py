@@ -19,10 +19,11 @@ python patcher.py
 + Extracts the updated files from their packaging (ZIP Archive)
 + Replaces old Ultima Files with the new patched files.
 + Uses threads to leverage the bandwidth throttle of the remote repository.
-+ *NEW* Creates configuration file on first launch.
-+ *NEW* Stores location of Ultima Directory (if found in list.) Can be modified for custom installs!
-+ *NEW* Stores location of configuraton file (config.ini)
-+ *NEW* After and update: Stores precomputed hashes of downloaded (now local) files so it cuts down on future downloading time. 
++ *NEW*: Creates configuration file on first launch.
++ *NEW*: Uses Ultima Online directory in configuration file for updating. Otherwise attempts to use from pre-defined list.
++ *NEW*: Stores location of configuraton file (config.ini) <-- Do no modify please.
++ *NEW*: After and update: Stores precomputed hashes of downloaded (now local) files so it cuts down on future downloading time. 
++ *NEW*: Uses XML in configuration file for downloads. If it is not present, it uses a predefined in the script.
 
 
 
