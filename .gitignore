@@ -23,6 +23,7 @@
 
 # Python other files
 *.pyc
+*.spec
 
 # Configuration
 *.ini
