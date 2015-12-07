@@ -1,4 +1,6 @@
 import xml.etree.ElementTree as ET
+import configparser
+import os.path
 
 # # # # # # # # # # # # # # # # # # # # # # # # 
 # Responsible for parsing the Updates.xml file
@@ -6,7 +8,7 @@ import xml.etree.ElementTree as ET
 # # # # # # # # # # # # # # # # # # # # # # # #
 
 
-def parse(xml_file):
+def xmlparse(xml_file):
     tree = ET.parse(xml_file)   # Assign the tree of the XML
     root = tree.getroot()       # Get that root (of the XML, (UpdateCollection))
     file_dict = {}              # Blank dictionary to hold the informaton of the file.
@@ -23,5 +25,32 @@ def parse(xml_file):
         file_list.append(DisplayName)       # Here's that appen we talked about earlier in the file.
 
     file_dict['files'] = file_list          # Lastly assign the list to "Files" in the dictionary.
+
     return file_dict                        # Return the dictionary to be used.
 
+
+def conf_write(config):
+    if not os.path.exists('config.ini'):                              # First time write/create.
+        config = configparser.ConfigParser()    
+        config['Files'] = {
+                'XML_URL': 'http://www.uoforever.com/patches/UOP/Updates.xml',
+                'UO_Directory': '' }
+        config['Files']['config'] = os.getcwd() + "/config.ini"
+        config['Hashes'] = {}
+    with open(config['Files']['config'], 'w') as configfile:
+        config.write(configfile)
+
+    return config
+
+
+def conf_read():
+    if not os.path.exists('config.ini'):
+        print("\nCreating configuration file...")
+        config = conf_write(None)
+    else:
+        print("\nLoading configuration file...")
+        config = configparser.ConfigParser()
+
+    config.read('config.ini')
+
+    return config

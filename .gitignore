@@ -24,6 +24,11 @@
 # Python other files
 *.pyc
 
+# Configuration
+*.ini
+*.cfg
+*.conf
+
 # Directories
 src/__pycache__/
 src/uo_patch/
