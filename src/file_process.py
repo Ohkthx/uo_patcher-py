@@ -37,7 +37,7 @@ def taskFile(config, file_info, uo_path):
         config['Hashes'][file_info['DisplayName']] = file_info['Hash']
         file_parser.conf_write(config)
         for files in le_file:
-            shutil.copy2(files, uo_path + files)                            # Move it to the uo_directory.
+            shutil.copy(files, uo_path + files)                            # Move it to the uo_directory.
             print(" [%s]  Moved to the Ultima Directory." % files)
     elif local_f_md5:                                                       # If hash is computed.
         if file_hash.check_hash(local_f_md5, file_info['Hash']):           # Check against the XML Hash
@@ -48,7 +48,7 @@ def taskFile(config, file_info, uo_path):
             config['Hashes'][file_info['DisplayName']] = file_info['Hash']
             file_parser.conf_write(config)
             for files in le_file:
-                shutil.copy2(files, uo_path + files)                        #  Move the file to the new location.
+                shutil.copy(files, uo_path + files)                        #  Move the file to the new location.
                 print(" [%s]  Moved to the Ultima Directory." % files)      
     else:
         print(" [%s]  Bad file." % file_info['DisplayName'])
