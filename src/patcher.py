@@ -5,11 +5,6 @@ import file_hash
 import file_process
 import file_parser
 
-if os.name == 'nt':
-	import admin			# Requires Admin privileges
-	if not admin.isUserAdmin():	# to install into Program Files
-    		admin.runAsAdmin()	# Prompts you for accepting UAC
-
 # # # # # # # # # # # # # # # # # # # # # # # # #
 # This is the core of the script.
 #  Calls all of the other functions that were
