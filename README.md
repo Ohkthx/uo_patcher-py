@@ -26,6 +26,8 @@ python patcher.py
 + *NEW*: Uses XML in configuration file for downloads. If it is not present, it uses a predefined in the script.
 
 
+##### Versions:
++ v1.0-alpha (Dec 9th, 2015) - Although it's been usable for a few days now, version 1 is identified as v1 due to being the first single-packaged executable usabled by Microsoft Windows users.
 
 ##### Dev notes:
 + [ X ] URL parsing. *URL library
