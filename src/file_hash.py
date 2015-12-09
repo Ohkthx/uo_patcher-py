@@ -1,4 +1,4 @@
-import hashlib
+from hashlib import md5
 import os.path
 
 # # # # # # # # # # # # # # # # # # #
@@ -20,7 +20,7 @@ def grab_hash(le_file_path):
         return True                             #  if not, flag "True" for downloading.
 
     buff = le_file.read()                       # Send the file into a buffer called "buff"
-    le_md5 = hashlib.md5(buff).hexdigest()      # Get the hash!
+    le_md5 = md5(buff).hexdigest()      # Get the hash!
     return le_md5                               # Return the computed md5hash of the file :D
 
 
