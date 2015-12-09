@@ -1,5 +1,6 @@
 import os
 import threading
+import urllib.request
 
 import file_hash
 import file_process
@@ -45,12 +46,14 @@ if not uo_path:
 THREADS = []                    # Empty list for thread names. This is to combine at end.
 file_process.cwdPatchDir()      # Changes the directory to the patching directory
 
-le_file = file_process.grab_file(update_xml)            # Downloads the Updater.xml file.
-if not le_file:                                         # If it doesn't download, it will simply be skipped.
+#le_file = file_process.grab_file(update_xml)            # Downloads the Updater.xml file.
+with urllib.request.urlopen(update_xml) as url:
+    le_xml_data = url.read()
+if not le_xml_data:                                         # If it doesn't download, it will simply be skipped.
     print("An error occured with: %s" % update_xml)
 else:
-    print()
-    file_dict = file_parser.xmlparse(le_file)        # Parse the XML file. 
+    print(" Parsing XML file for new content...\n")
+    file_dict = file_parser.xmlparse(le_xml_data)        # Parse the XML file. 
     file_list = file_dict['files']              # Assign the list of files from file_dict (see file_parser.py)
     for le_file in file_list:
         T = threading.Thread(target=file_process.taskFile, args=(config, file_dict[le_file], uo_path, ) ) # Create a thread per update file to leverage bandwidth

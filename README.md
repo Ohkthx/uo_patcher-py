@@ -1,3 +1,4 @@
+{ "Current-Version": "1.0" }
 ### Ultima Online Patcher.
 This is a patcher for Ultima Online that works on GNU/Linux and Windows. It can potentially also work on OSX (Not tested.)
 
@@ -39,6 +40,6 @@ python patcher.py
 + [ X ] Store the filename:hash into a dictionary.
 + [ X ] Download zip archive
 + [ X ] Extract zip archive
-+ [ -- ] Read XML and parsing XML without downloading.
++ [ X ] Read XML and parsing XML without downloading.
 + [ -- ] Check for application updates **nix & windows.
 + [ -- ] Prompt for setting first repository (generate a config file)

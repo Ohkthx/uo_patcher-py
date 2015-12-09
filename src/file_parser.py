@@ -8,12 +8,11 @@ import os.path
 # # # # # # # # # # # # # # # # # # # # # # # #
 
 
-def xmlparse(xml_file):
+def xmlparse(xml_data):
     ''' Parses the XML file passed to it. This XML should be obtained
     from a remote host/server and should include the file names, hashes,
     locations(URL), and description of all files that are to be updated. '''
-    tree = ET.parse(xml_file)   # Assign the tree of the XML
-    root = tree.getroot()       # Get that root (of the XML, (UpdateCollection))
+    root = ET.fromstring(xml_data)   # Assign the tree/root of the XML string
     file_dict = {}              # Blank dictionary to hold the informaton of the file.
     file_list = []              # This will append to a list in the dictionary a list of the filenames.
 
