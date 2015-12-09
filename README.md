@@ -37,3 +37,6 @@ python patcher.py
 + [ X ] Store the filename:hash into a dictionary.
 + [ X ] Download zip archive
 + [ X ] Extract zip archive
++ [ -- ] Read XML and parsing XML without downloading.
++ [ -- ] Check for application updates **nix & windows.
++ [ -- ] Prompt for setting first repository (generate a config file)
