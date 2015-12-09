@@ -31,25 +31,33 @@ def taskFile(config, file_info, uo_path):
         local_f_md5 = config['Hashes'][file_info['DisplayName']]            # Get key from dictionary instead of computing.
     else:
         local_f_md5 = file_hash.grab_hash(uo_path + file_info['DisplayName'])  # Compute the hash of the local file
+
     if local_f_md5 == True:                                                 # If the file doesn't exist..
         dl_file = grab_file(file_info['URL'])                               # Download it,
         le_file = pull_file(dl_file)                                        # Extract it.
         config['Hashes'][file_info['DisplayName']] = file_info['Hash']
         file_parser.conf_write(config)
+
         for files in le_file:
-            shutil.copy(files, uo_path + files)                            # Move it to the uo_directory.
+            shutil.copy(files, uo_path + files)                             # Move it to the uo_directory.
             print(" [%s]  Moved to the Ultima Directory." % files)
+
     elif local_f_md5:                                                       # If hash is computed.
-        if file_hash.check_hash(local_f_md5, file_info['Hash']):           # Check against the XML Hash
+        if file_hash.check_hash(local_f_md5, file_info['Hash']):            # Check against the XML Hash
+            config['Hashes'][file_info['DisplayName']] = file_info['Hash']
+            file_parser.conf_write(config)
             print(" [%s]  Matching Hashes. Not installing." % file_info['DisplayName'])
+
         else:
             dl_file = grab_file(file_info['URL'])                           # Else, download the file
             le_file = pull_file(dl_file)                                    #  Extract the file.
             config['Hashes'][file_info['DisplayName']] = file_info['Hash']
             file_parser.conf_write(config)
+
             for files in le_file:
                 shutil.copy(files, uo_path + files)                        #  Move the file to the new location.
                 print(" [%s]  Moved to the Ultima Directory." % files)      
+
     else:
         print(" [%s]  Bad file." % file_info['DisplayName'])
 
