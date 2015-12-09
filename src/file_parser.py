@@ -36,7 +36,7 @@ def conf_write(config):
     ''' Creates and writes changes to configuration files.
     If "None" is passed to the function it creates, otherwise it
     writes new changes. '''
-    if not os.path.exists('config.ini'):                              # First time write/create.
+    if not os.path.exists('config.ini') and config == None:                              # First time write/create.
         config = configparser.ConfigParser()    
         config['Files'] = {
                 'XML_URL': 'http://www.uoforever.com/patches/UOP/Updates.xml',
