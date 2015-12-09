@@ -11,8 +11,15 @@ import file_parser
 #  Calls all of the other functions that were
 #  were created.
 # # # # # # # # # # # # # # # # # # # # # # # # #
+version = 0.9
+if file_parser.check_forupdates(version):
+    print("Updated patching client.")
+else:
+    print("No updates for patching client.")
+# # # # # # # # # # # # # # # # # # # # # # # # # 
 
 config = file_parser.conf_read()
+
 if 'xml_url' in config['Files']:                    # If xml is defined in configuration file..
     update_xml = config['Files']['xml_url']         #   use that one.
 else:

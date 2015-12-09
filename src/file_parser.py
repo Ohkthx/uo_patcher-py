@@ -1,11 +1,16 @@
 import xml.etree.ElementTree as ET
-import configparser
 import os.path
+import urllib.request as urlrequest
+from os import name as osname
+from json import loads
+from configparser import ConfigParser
 
 # # # # # # # # # # # # # # # # # # # # # # # # 
 # Responsible for parsing the Updates.xml file
 #   ( SUPER ) important.
 # # # # # # # # # # # # # # # # # # # # # # # #
+patcher_update_url = "https://raw.githubusercontent.com/0x1p2/uo_patcher-py/master/README.md"
+# # # # # # # # # # # # # # # # # # # # # # # # 
 
 
 def xmlparse(xml_data):
@@ -36,7 +41,7 @@ def conf_write(config):
     If "None" is passed to the function it creates, otherwise it
     writes new changes. '''
     if not os.path.exists('config.ini') and config == None:                              # First time write/create.
-        config = configparser.ConfigParser()    
+        config = ConfigParser()    
         config['Files'] = {
                 'XML_URL': 'http://www.uoforever.com/patches/UOP/Updates.xml',
                 'UO_Directory': '' }
@@ -56,8 +61,25 @@ def conf_read():
         config = conf_write(None)
     else:
         print("\nLoading configuration file...")
-        config = configparser.ConfigParser()
+        config = ConfigParser()
 
     config.read('config.ini')
 
     return config
+
+def check_forupdates(app_version):
+    with urlrequest.urlopen(patcher_update_url) as update_check:
+        foreign_request = loads(update_check.readline().decode())
+
+    if app_version < float(foreign_request['Current-Version']):
+        if osname == 'nt':
+            # Get the new executable
+            print("Windows host.")
+        else:
+            # Get individual scripts
+            print("Linux Host.")
+        return True
+    else:
+        return False
+
+
