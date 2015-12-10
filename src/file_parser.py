@@ -69,6 +69,7 @@ def conf_read():
 
     return config                   # Returns the object to be used by another function.
 
+
 def check_forupdates(app_version):
     ''' Compares patchers version to that of the version at GitHub. Will update if the
     local version is less than that version number remotely. (float number)
