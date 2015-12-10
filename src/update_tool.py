@@ -2,7 +2,7 @@ import urllib.request as urlrequest
 import sys
 from time import sleep
 from subprocess import Popen
-import os
+from os import name as os_name
 
 
 def main(url):
@@ -34,13 +34,13 @@ def main(url):
 
         print("Download complete.\nRelaunching: %s" % file_name)
         sleep(2.0)
-        if os.name != 'nt':
+        if os_name != 'nt':
             file_name = './' + file_name
 
         Popen([file_name])
-    except IOError:
-        print("Having issues with remote pulling: %s" % file_name)
-        if os.name == 'nt':
+    except IOError as err:
+        print("  [ ERROR ]  IO Error: [Code: %s, %s]" % (err.errno, err.strerror))
+        if os_name == 'nt':
             input(" Press any key to exit...")
 
 

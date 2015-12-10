@@ -146,8 +146,8 @@ def client_update(url):
 
         local_file.close()
 
-    except IOError:
-        print("Having issues with remote pulling: %s" % file_name)
+    except IOError as conn_err:
+        print("  [ ERROR ]  IO Error: [Code: %s, %s]" % (conn_err.errno, conn_err.strerror))
 
 
 

@@ -1,7 +1,8 @@
 import xml.etree.ElementTree as ET
 import os.path, sys
 import urllib.request as urlrequest
-from os import name as osname
+import errno
+from os import name as os_name
 from json import loads
 from configparser import ConfigParser
 from subprocess import Popen
@@ -83,7 +84,7 @@ def check_forupdates(app_version):
         print(" Patcher is out-of-date.\n Local version: [ %s ], " % app_version, end="")
         print("Current version: [ %s ]" % foreign_request['Current-Version'])
 
-        if osname == 'nt':                              # Windows users....
+        if os_name == 'nt':                              # Windows users....
             patcher_file_name = "Ultima_Patcher.exe"   #  Pull Ultima_Patcher.exe
             patcher_tool_name = "patcher_update_tool.exe"
         else:                                           # Linux users....
@@ -98,15 +99,19 @@ def check_forupdates(app_version):
             try:
                 if not os.path.isfile(patcher_tool_name):                          # If the stand-alone updater isn't found, 
                     status = file_process.client_update(patcher_tool_url)               # If accepted, it will pull the updater.
-                if osname != 'nt':                                                  # Change the name for linux users.
+                if os_name != 'nt':                                                  # Change the name for linux users.
                     patcher_tool_name = './' + patcher_tool_name                    # Because it requires a different execution.
                 Popen([patcher_tool_name, patcher_update_url])                   # Opens a new process for update tool.
                 print("Exiting... wait for download of new client. Relaunch patcher on update.")
                 sys.exit()
+            except FileNotFoundError as file404_err:
+                print("  [ ERROR ]  Code: %s, %s" % (file404_err.errno, file404_err.strerror))
+            except NameError as name_err:
+                print("  [ ERROR ]  Code: %s, %s" % (name_err.errno, name_err.strerror))
+            except IOError as conn_err:
+                print("  [ ERROR ]  IO Error: [Code: %s, %s]" % (conn_err.errno, conn_err.strerror))
 
-            except IOError:
-                print("  Error with remote repository for patcher update.")
-                return False
+            return False
 
         else:
             print(" Skipping update.")

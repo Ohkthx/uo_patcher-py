@@ -1,6 +1,7 @@
 import os
 from threading import Thread
 import urllib.request
+import errno
 
 import file_hash
 import file_process
@@ -11,7 +12,7 @@ import file_parser
 #  Calls all of the other functions that were
 #  were created.
 # # # # # # # # # # # # # # # # # # # # # # # # #
-version = 0.09                                      # Current Version number for the application.
+version = 0.9                                      # Current Version number for the application.
 if file_parser.check_forupdates(version):           #  Compares and checks for updates to the patcher.
     print("  Updated patching client.")
 
@@ -56,7 +57,8 @@ file_process.cwdPatchDir()      # Changes the directory to the patching director
 try:
     with urllib.request.urlopen(update_xml) as url:             # Opens the URL.
         le_xml_data = url.read()                                # Places all data from the URL into le_xml_data variable.
-except IOError:
+except IOError as conn_err:
+    print("  [ ERROR ]  IO Error: [Code: %s, %s]" % (conn_err.errno, conn_err.strerror))
     print("Unable to access remote repository for updating Ultima Online.")
     print("Check network connection and/or config.ini for correct repository.")
     print("Exiting...")
