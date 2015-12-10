@@ -121,26 +121,33 @@ def getUOPath():
 
 
 def client_update(url):
-    file_name = url.split('/')[-1]
-    remote_file = urllib.request.urlopen(url)
-    local_file = open(file_name, 'wb')
+    file_name = url.split('/')[-1]          # Grab the file name.
+    try:
+        remote_file = urllib.request.urlopen(url)   # Open the remote end.
+        local_file = open(file_name, 'wb')      # Set object for local file
+    
+        file_size = float(remote_file.headers['Content-Length'])    
+        print("  Downloading: %s\n Size: %.2fMB" % (file_name, file_size/(1024.0 * 1024.0)))
 
-    file_size = float(remote_file.headers['Content-Length'])
-    print(" Downloading: %s \n Size: %.2fMB" % (file_name, file_size/(1024.0 * 1024.0)))
+        block_size = 8192
+        file_size_dl = 0
 
-    block_size = 8192
-    file_size_dl = 0
-    while True:
-        buffer = remote_file.read(block_size)
-        if not buffer:
-            break
+        while True:
+            buffer = remote_file.read(block_size)
+            if not buffer:
+                break
 
-        file_size_dl += len(buffer)
-        local_file.write(buffer)
+            file_size_dl += len(buffer)
+            local_file.write(buffer)
 
-        status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
-        status = status + chr(8)*(len(status)+1)
-        print(status)
+            status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
+            status = status + chr(8)*(len(status)+1)
+            print(status)
 
-    local_file.close()
+        local_file.close()
+
+    except IOError:
+        print("Having issues with remote pulling: %s" % file_name)
+
+
 

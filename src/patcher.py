@@ -11,7 +11,7 @@ import file_parser
 #  Calls all of the other functions that were
 #  were created.
 # # # # # # # # # # # # # # # # # # # # # # # # #
-version = 1.0                                       # Current Version number for the application.
+version = 0.09                                      # Current Version number for the application.
 if file_parser.check_forupdates(version):           #  Compares and checks for updates to the patcher.
     print("  Updated patching client.")
 

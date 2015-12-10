@@ -1,9 +1,10 @@
 import xml.etree.ElementTree as ET
-import os.path
+import os.path, sys
 import urllib.request as urlrequest
 from os import name as osname
 from json import loads
 from configparser import ConfigParser
+from subprocess import Popen
 
 import file_process
 
@@ -11,9 +12,6 @@ import file_process
 # Responsible for parsing the Updates.xml file
 #   ( SUPER ) important.
 # # # # # # # # # # # # # # # # # # # # # # # #
-patcher_update_url = "https://raw.githubusercontent.com/0x1p2/uo_patcher-py/master/README.md"
-patcher_update_base = "https://github.com/0x1p2/uo_patcher-py/releases/download/"
-# # # # # # # # # # # # # # # # # # # # # # # # 
 
 
 def xmlparse(xml_data):
@@ -74,6 +72,10 @@ def check_forupdates(app_version):
     ''' Compares patchers version to that of the version at GitHub. Will update if the
     local version is less than that version number remotely. (float number)
     Download is based off of the "Tag" assigned to it.'''
+    # # # # # # # # # # # # # # # # # # # # # # # # 
+    patcher_update_url = "https://raw.githubusercontent.com/0x1p2/uo_patcher-py/master/README.md"
+    patcher_update_base = "https://github.com/0x1p2/uo_patcher-py/releases/download/"
+    # # # # # # # # # # # # # # # # # # # # # # # # 
     with urlrequest.urlopen(patcher_update_url) as update_check:
         foreign_request = loads(update_check.readline().decode())   # Grabs the first line of the README.md file.
 
@@ -81,23 +83,31 @@ def check_forupdates(app_version):
         print(" Patcher is out-of-date.\n Local version: [ %s ], " % app_version, end="")
         print("Current version: [ %s ]" % foreign_request['Current-Version'])
 
-        if osname == 'nt':
-            patcher_file_name = "/Ultima_Patcher.exe"
-            full_update_path = patcher_update_base + foreign_request['Tag'] + patcher_file_name
+        if osname == 'nt':                              # Windows users....
+            patcher_file_name = "Ultima_Patcher.exe"   #  Pull Ultima_Patcher.exe
+            patcher_tool_name = "patcher_update_tool.exe"
+        else:                                           # Linux users....
+            patcher_file_name = "Ultima_Patcher"       #  Pull Ultima_Patcher
+            patcher_tool_name = "patcher_update_tool"
 
-        else:
-            patcher_file_name = "/Ultima_Patcher"
-            full_update_path = patcher_update_base + foreign_request['Tag'] + patcher_file_name
+        patcher_update_url = patcher_update_base + foreign_request['Tag'] + '/' + patcher_file_name   # Generates the entire IRL
+        patcher_tool_url =  patcher_update_base + foreign_request['Tag'] + '/' + patcher_tool_name    # The patch to the updating tool used for updating the patcher.
 
-        update_q = input(" Do you wish to update [Yes/no, enter=yes]: ").lower()
-        yes = set(['yes', 'ye', 'y', ''])
-        no = set(['no', 'n'])
-        if update_q in yes:
+
+        if get_q_answer(" Do you wish to update [Yes/no, enter=yes]: "):
             try:
-                status = file_process.client_update(full_update_path)
+                if not os.path.isfile(patcher_tool_name):                          # If the stand-alone updater isn't found, 
+                    status = file_process.client_update(patcher_tool_url)               # If accepted, it will pull the updater.
+                if osname != 'nt':                                                  # Change the name for linux users.
+                    patcher_tool_name = './' + patcher_tool_name                    # Because it requires a different execution.
+                Popen([patcher_tool_name, patcher_update_url])                   # Opens a new process for update tool.
+                print("Exiting... wait for download of new client. Relaunch patcher on update.")
+                sys.exit()
+
             except IOError:
                 print("  Error with remote repository for patcher update.")
                 return False
+
         else:
             print(" Skipping update.")
             return False
@@ -109,3 +119,12 @@ def check_forupdates(app_version):
         return False
 
 
+def get_q_answer(question_string):
+    yes = set(['yes', 'ye', 'y', ''])                   # Types of "yes"'s allowed.
+    no = set(['no', 'n'])                               # Unused as of now.
+
+    question_result = input(question_string).lower()    # Grab input and make it lowercase.
+    if question_result in yes:                          # Compare.
+        return True                                     #  True = Yes
+    else:
+        return False                                    #  False = No
