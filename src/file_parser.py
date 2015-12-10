@@ -86,11 +86,11 @@ def check_forupdates(app_version):
         print("Current version: [ %s ]" % foreign_request['Current-Version'])
 
         if os_name == 'nt':                              # Windows users....
-            patcher_file_name = "Ultima_Patcher.exe"   #  Pull Ultima_Patcher.exe
-            patcher_tool_name = "patcher_update_tool.exe"
+            patcher_file_name = "Ultima_Patcher_NT.exe"   #  Pull Ultima_Patcher.exe
+            patcher_tool_name = "Patcher_Updater_Tool_NT.exe"
         else:                                           # Linux users....
-            patcher_file_name = "Ultima_Patcher"       #  Pull Ultima_Patcher
-            patcher_tool_name = "patcher_update_tool"
+            patcher_file_name = "Ultima_Patcher_NIX"       #  Pull Ultima_Patcher
+            patcher_tool_name = "Patcher_Updater_Tool_NIX"
 
         patcher_update_url = patcher_update_base + foreign_request['Tag'] + '/' + patcher_file_name   # Generates the entire IRL
         patcher_tool_url =  patcher_update_base + foreign_request['Tag'] + '/' + patcher_tool_name    # The patch to the updating tool used for updating the patcher.
