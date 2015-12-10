@@ -1,4 +1,4 @@
-{ "Current-Version": "1.1", "Tag": "v1.1-beta" }
+{ "Current-Version": "1.11", "Tag": "v1.11-beta" }
 ### Ultima Online Patcher.
 This is a patcher for Ultima Online that works on GNU/Linux and Windows. It can potentially also work on OSX (Not tested.)
 

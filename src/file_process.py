@@ -1,7 +1,8 @@
 import zipfile
 import urllib.request
 import os
-import shutil
+from shutil import copy as shutil_copy
+from time import sleep
 
 import file_hash
 import file_parser
@@ -18,9 +19,10 @@ def cwdPatchDir(direction):
     if direction == "forward":
         if not os.path.exists("uo_patch/"):
             os.makedirs("uo_patch/")
-            os.chdir("uo_patch/")   # Changes to the directory.
-        else:
-            os.chdir("uo_patch/")   # Changes to the directory.
+            while not os.path.exists("uo_patch/"):
+                sleep(0.25)
+
+        os.chdir("uo_patch/")   # Changes to the directory.
         return True
     else:
         os.chdir("../")
@@ -47,7 +49,7 @@ def taskFile(config, file_info, uo_path):
         file_parser.conf_write(config)
 
         for files in le_file:
-            shutil.copy(files, uo_path + files)                             # Move it to the uo_directory.
+            shutil_copy(files, uo_path + files)                             # Move it to the uo_directory.
             print(" [%s]  Moved to the Ultima Directory." % files)
 
     elif local_f_md5:                                                       # If hash is computed.
@@ -63,7 +65,7 @@ def taskFile(config, file_info, uo_path):
             file_parser.conf_write(config)
 
             for files in le_file:
-                shutil.copy(files, uo_path + files)                        #  Move the file to the new location.
+                shutil_copy(files, uo_path + files)                        #  Move the file to the new location.
                 print(" [%s]  Moved to the Ultima Directory." % files)      
 
     else:

@@ -13,7 +13,7 @@ import file_parser
 #  Calls all of the other functions that were
 #  were created.
 # # # # # # # # # # # # # # # # # # # # # # # # #
-version = 1.1                                      # Current Version number for the application.
+version = 1.11                                      # Current Version number for the application.
 tag = "v1.1-beta"
 print("Created by: 0x1p2 (Ryan Ball), Version: %s" % tag)
 if file_parser.check_forupdates(version):           #  Compares and checks for updates to the patcher.
@@ -81,14 +81,15 @@ else:
 
 # # # # # # # # # # # # # # # # # # # # #
 # #   CLEAN UP  THREADS and DIRECTORIES 
-if file_process.cwdPatchDir("back"):                    # Function returns TRUE if uo_patch is a subdirectory
-    rmtree("uo_patch/", ignore_errors=True)      #  Removes the patch directory since it isn't needed anymore.
 
 for x in THREADS:
     x.start()       # Start all of the threads.
 
 for x in THREADS:
     x.join()        # Wait for thread to finish before exiting.
+    
+if file_process.cwdPatchDir("back"):                    # Function returns TRUE if uo_patch is a subdirectory
+    rmtree("uo_patch/", ignore_errors=True)      #  Removes the patch directory since it isn't needed anymore.
 
 print("\n Update check complete.")
 
