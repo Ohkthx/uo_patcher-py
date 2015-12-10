@@ -14,7 +14,7 @@ import file_parser
 #  were created.
 # # # # # # # # # # # # # # # # # # # # # # # # #
 version = 1.11                                      # Current Version number for the application.
-tag = "v1.1-beta"
+tag = "v1.11-beta"
 print("Created by: 0x1p2 (Ryan Ball), Version: %s" % tag)
 if file_parser.check_forupdates(version):           #  Compares and checks for updates to the patcher.
     print("  Updated patching client.")
