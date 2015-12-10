@@ -46,7 +46,10 @@ def main(url):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("URL not passed.")
+        print("URL not passed for installation.")
+        print("You also may have clicked the wrong executable.")
+        if os_name == 'nt':
+            input(' Press any key to continue: ')
         sys.exit()
     else:
         main(sys.argv[1])
