@@ -2,6 +2,7 @@ import os
 from threading import Thread
 import urllib.request
 import errno
+from shutil import rmtree
 
 import file_hash
 import file_process
@@ -54,7 +55,7 @@ if not uo_path:
 
 #   Pull the Update(s).xml   #
 THREADS = []                    # Empty list for thread names. This is to combine at end.
-file_process.cwdPatchDir()      # Changes the directory to the patching directory
+file_process.cwdPatchDir("forward")      # Changes the directory to the patching directory
 
 try:
     with urllib.request.urlopen(update_xml) as url:             # Opens the URL.
@@ -76,8 +77,13 @@ else:
         #print("  Checking: %s " % le_file)
         T = Thread(target=file_process.taskFile, args=(config, file_dict[le_file], uo_path, ) ) # Create a thread per update file to leverage bandwidth
         THREADS.append(T)       # Add the thread to the list for joining...
-    
-    
+
+
+# # # # # # # # # # # # # # # # # # # # #
+# #   CLEAN UP  THREADS and DIRECTORIES 
+if file_process.cwdPatchDir("back"):                    # Function returns TRUE if uo_patch is a subdirectory
+    rmtree("uo_patch/", ignore_errors=True)      #  Removes the patch directory since it isn't needed anymore.
+
 for x in THREADS:
     x.start()       # Start all of the threads.
 

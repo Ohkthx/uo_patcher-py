@@ -13,13 +13,21 @@ import file_parser
 # # # # # # # # # # # # # # # # # # # # 
 
 # Create directory where all ZIP and .XML files will be stored
-def cwdPatchDir():
+def cwdPatchDir(direction):
     ''' Creates and/or changes to the patching directory. '''
-    if not os.path.exists("uo_patch/"):
-        os.makedirs("uo_patch/")
-        os.chdir("uo_patch/")   # Changes to the directory.
+    if direction == "forward":
+        if not os.path.exists("uo_patch/"):
+            os.makedirs("uo_patch/")
+            os.chdir("uo_patch/")   # Changes to the directory.
+        else:
+            os.chdir("uo_patch/")   # Changes to the directory.
+        return True
     else:
-        os.chdir("uo_patch/")   # Changes to the directory.
+        os.chdir("../")
+        if os.path.exists("uo_patch/"):
+            return True
+        else:
+            return False
 
 
 def taskFile(config, file_info, uo_path):
