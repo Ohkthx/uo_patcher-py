@@ -11,11 +11,10 @@ import file_parser
 #  Calls all of the other functions that were
 #  were created.
 # # # # # # # # # # # # # # # # # # # # # # # # #
-version = 0.9                                       # Current Version number for the application.
+version = 1.0                                       # Current Version number for the application.
 if file_parser.check_forupdates(version):           #  Compares and checks for updates to the patcher.
-    print("Updated patching client.")
-else:
-    print("No updates for patching client.")
+    print("  Updated patching client.")
+
 # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 config = file_parser.conf_read()                    # Read configuration file, if non-existent it creates.
@@ -23,7 +22,7 @@ config = file_parser.conf_read()                    # Read configuration file, i
 if 'xml_url' in config['Files']:                    # If xml is defined in configuration file..
     update_xml = config['Files']['xml_url']         #   use that one.
 else:
-    update_xml = "http://www.uoforever.com/patches/UOP/Updates.xml" # Else, use a pre-defined.
+    update_xml = "http://www.ultima-shards.com/patches/UOP/Updates.xml" # Else, use a pre-defined.
 
 if not config['Files']['uo_directory']:
     dir_list = file_process.getUOPath()             # Just ya. Full path.
@@ -54,9 +53,15 @@ if not uo_path:
 THREADS = []                    # Empty list for thread names. This is to combine at end.
 file_process.cwdPatchDir()      # Changes the directory to the patching directory
 
+try:
+    with urllib.request.urlopen(update_xml) as url:             # Opens the URL.
+        le_xml_data = url.read()                                # Places all data from the URL into le_xml_data variable.
+except IOError:
+    print("Unable to access remote repository for updating Ultima Online.")
+    print("Check network connection and/or config.ini for correct repository.")
+    print("Exiting...")
+    exit()
 
-with urllib.request.urlopen(update_xml) as url:             # Opens the URL.
-    le_xml_data = url.read()                                # Places all data from the URL into le_xml_data variable.
 if not le_xml_data:                                         # If it doesn't download, it will simply be skipped.
     print("An error occured with: %s" % update_xml)
 else:
@@ -64,14 +69,18 @@ else:
     file_dict = file_parser.xmlparse(le_xml_data)        # Parse the XML file. 
     file_list = file_dict['files']              # Assign the list of files from file_dict (see file_parser.py)
     for le_file in file_list:
+        #print("  Checking: %s " % le_file)
         T = Thread(target=file_process.taskFile, args=(config, file_dict[le_file], uo_path, ) ) # Create a thread per update file to leverage bandwidth
         THREADS.append(T)       # Add the thread to the list for joining...
-
+    
+    
 for x in THREADS:
     x.start()       # Start all of the threads.
 
 for x in THREADS:
     x.join()        # Wait for thread to finish before exiting.
+
+print("\n Update check complete.")
 
 if os.name == 'nt':
     input("\nPress any key to continue...")

@@ -5,11 +5,14 @@ from os import name as osname
 from json import loads
 from configparser import ConfigParser
 
+import file_process
+
 # # # # # # # # # # # # # # # # # # # # # # # # 
 # Responsible for parsing the Updates.xml file
 #   ( SUPER ) important.
 # # # # # # # # # # # # # # # # # # # # # # # #
 patcher_update_url = "https://raw.githubusercontent.com/0x1p2/uo_patcher-py/master/README.md"
+patcher_update_base = "https://github.com/0x1p2/uo_patcher-py/releases/download/"
 # # # # # # # # # # # # # # # # # # # # # # # # 
 
 
@@ -43,7 +46,7 @@ def conf_write(config):
     if not os.path.exists('config.ini') and config == None:                     # First time write/create.
         config = ConfigParser()                                                 # Loads configuration class
         config['Files'] = {                                                     # Creates intial Files section.
-                'XML_URL': 'http://www.uoforever.com/patches/UOP/Updates.xml',  # Places "default" repository for updates.
+                'XML_URL': 'http://www.ultima-shards.com/patches/UOP/Updates.xml',  # Places "default" repository for updates.
                 'UO_Directory': '' }                                            # Assigns no default UO directory. (to be found or placed by user.)
         config['Files']['config'] = os.getcwd() + "/config.ini"                 # Set the configuration file location.
         config['Hashes'] = {}                                                   # No hashes on start, this will be updated later.
@@ -75,14 +78,34 @@ def check_forupdates(app_version):
         foreign_request = loads(update_check.readline().decode())   # Grabs the first line of the README.md file.
 
     if app_version < float(foreign_request['Current-Version']):     # Compares local to remote versions as float numbers.
+        print(" Patcher is out-of-date.\n Local version: [ %s ], " % app_version, end="")
+        print("Current version: [ %s ]" % foreign_request['Current-Version'])
+
         if osname == 'nt':
-            # Get the new executable
-            print("Windows host.")
+            patcher_file_name = "/Ultima_Patcher.exe"
+            full_update_path = patcher_update_base + foreign_request['Tag'] + patcher_file_name
+
         else:
-            # Get individual scripts
-            print("Linux Host.")
+            patcher_file_name = "/Ultima_Patcher"
+            full_update_path = patcher_update_base + foreign_request['Tag'] + patcher_file_name
+
+        update_q = input(" Do you wish to update [Yes/no, enter=yes]: ").lower()
+        yes = set(['yes', 'ye', 'y', ''])
+        no = set(['no', 'n'])
+        if update_q in yes:
+            try:
+                status = file_process.client_update(full_update_path)
+            except IOError:
+                print("  Error with remote repository for patcher update.")
+                return False
+        else:
+            print(" Skipping update.")
+            return False
+
         return True
+                    
     else:
+        print("  No updates found for patcher.")
         return False
 
 

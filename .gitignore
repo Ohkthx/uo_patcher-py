@@ -24,6 +24,7 @@
 # Python other files
 *.pyc
 *.spec
+setup.py
 
 # Configuration
 *.ini
