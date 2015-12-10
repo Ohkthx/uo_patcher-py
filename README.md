@@ -11,7 +11,6 @@ python patcher.py
 ```
 
 #### Features:
-+ Connects to a designated server...
 + Downloads the Updates.xml and parses the XML for potentially new information.
 + Checks the data outlined in Updates.xml to local data and compares the hashes (Unique identity for the file)
 + If the files match, the file is ignored.
@@ -20,15 +19,16 @@ python patcher.py
 + Extracts the updated files from their packaging (ZIP Archive)
 + Replaces old Ultima Files with the new patched files.
 + Uses threads to leverage the bandwidth throttle of the remote repository.
-+ *NEW*: Creates configuration file on first launch.
-+ *NEW*: Uses Ultima Online directory in configuration file for updating. Otherwise attempts to use from pre-defined list.
-+ *NEW*: Stores location of configuraton file (config.ini) <-- Do no modify please.
-+ *NEW*: After and update: Stores precomputed hashes of downloaded (now local) files so it cuts down on future downloading time. 
-+ *NEW*: Uses XML in configuration file for downloads. If it is not present, it uses a predefined in the script.
++ Configuration file to make custom modifications!
++ Uses Ultima Online directory in configuration file for updating. Otherwise attempts to use from pre-defined list.
++ Uses XML in configuration file for downloads. If it is not present, it uses a predefined in the script.
++ Saves hashes to increase speed on next run.
++ *NEW*: Checks for Updates to the patcher, prompts if update is found.
 
 
 ##### Versions:
-+ v1.0-alpha (Dec 9th, 2015) - Although it's been usable for a few days now, version 1 is identified as v1 due to being the first single-packaged executable usabled by Microsoft Windows users.
++ v1.0-alpha (Dec  9th, 2015) - Although it's been usable for a few days now, version 1 is identified as v1 due to being the first single-packaged executable usabled by Microsoft Windows users.
++ v1.1-beta  (Dec 10th, 2015) - Much more stable client than alpha. More Error handling, self-updating patcher abilities, and minor issues resolved. Windows and Linux compatible.
 
 ##### Dev notes:
 + [ X ] URL parsing. *URL library
@@ -41,5 +41,5 @@ python patcher.py
 + [ X ] Download zip archive
 + [ X ] Extract zip archive
 + [ X ] Read XML and parsing XML without downloading.
-+ [ -- ] Check for application updates **nix & windows.
++ [ X ] Check for application updates **nix & windows.
 + [ -- ] Prompt for setting first repository (generate a config file)
