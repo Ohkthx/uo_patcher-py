@@ -8,6 +8,9 @@ import file_hash
 import file_process
 import file_parser
 
+# # # # # # # # # # # # # # # # # # #
+# Created by: Ryan Ball (0x1p2/Schism)
+# Date created: December 4th, 2016
 # # # # # # # # # # # # # # # # # # # # # # # # #
 # This is the core of the script.
 #  Calls all of the other functions that were
