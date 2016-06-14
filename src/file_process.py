@@ -9,7 +9,7 @@ import file_parser
 
 # # # # # # # # # # # # # # # # # # #
 # Created by: Ryan Ball (0x1p2/Schism)
-# Date created: December 4th, 2016
+# Date created: December 4th, 2015
 # # # # # # # # # # # # # # # # # # # #
 # Responsible for processing the files
 #  Downloads files

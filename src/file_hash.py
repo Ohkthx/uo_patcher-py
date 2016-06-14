@@ -3,7 +3,7 @@ import os.path
 
 # # # # # # # # # # # # # # # # # # #
 # Created by: Ryan Ball (0x1p2/Schism)
-# Date created: December 4th, 2016
+# Date created: December 4th, 2015
 # # # # # # # # # # # # # # # # # # #
 # Reponsible for checking the files.
 #  Gets the hashes of files
